@@ -24,3 +24,16 @@ Route::name('login')->get('/login', function() {
 Route::name('register')->get('/register', function() {
   return view('register');
 });
+
+Route::name('dashboard')->get('/dashboard', function() {
+  return view('dashboard');
+});
+
+Route::group(
+  [
+    'namespace' => 'App\Http\Controllers',
+  ],
+  function () {
+    Route::name('registerUser')->post('/register', 'UserController@register');
+    Route::name('loginUser')->post('/login', 'UserController@login');
+  });

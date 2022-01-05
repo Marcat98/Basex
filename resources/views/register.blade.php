@@ -27,14 +27,22 @@
       </div>
     </div>
 
+    @isset($message)
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      {{ $message }}
+    </div>
+    @endisset
+
     <div class="main1">
       <p class="sign" align="center">Register.</p>
-      <form class="form1">
-        <input class="email" type="text" align="center" placeholder="E-mail">
-        <input class="un " type="text" align="center" placeholder="Username">
-        <input class="pass" type="password" align="center" placeholder="Password">
-        <input class="pass" type="password" align="center" placeholder="Repeat Password">
-        <a href="projects.html" class="submit" align="center">Register</a>
+      <form class="form1" method="post" action="{{ route('registerUser') }}">
+        @csrf
+        <input class="un " type="text" align="center" placeholder="Username" name="user">
+        <input class="email" type="text" align="center" placeholder="E-Mail" name="email">
+        <input class="pass" type="password" align="center" placeholder="Password" name="pw">
+        <input class="pass" type="password" align="center" placeholder="Repeat Password" name="pwrepeated">
+        <input type="submit" class="submit" align="center" value="Register"/>
       <p class="forgot" align="center"><a href="{{ route('login')}}">Already have an account? Sign in.</p>
     </div>
   </body>

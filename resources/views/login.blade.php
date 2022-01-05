@@ -26,12 +26,21 @@
           </nav>
       </div>
     </div>
+
+    @isset($message)
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      {{ $message }}
+    </div>
+    @endisset
+
     <div class="main">
       <p class="sign" align="center">Login.</p>
-      <form class="form1">
-        <input class="un" type="text" align="center" placeholder="Username">
-        <input class="pass" type="password" align="center" placeholder="Password">
-        <a href="projects.html" class="submit" align="center">Sign in</a>
+      <form class="form1" method="post" action="{{ route('loginUser') }}">
+        @csrf
+        <input class="un" type="text" align="center" placeholder="Username" name="user">
+        <input class="pass" type="password" align="center" placeholder="Password" name="pw">
+        <input type="submit" class="submit" align="center" value="Login"/>
         <p class="forgot" align="center"><a href="#">Forgot Password?</p>
     </div>
   </body>
