@@ -53,6 +53,9 @@ class UserController extends Controller
           'password' => $pw,
         ]);
 
+        session()->put('loggedin', true);
+        session()->put('user', $username);
+
         return view('dashboard', [
           'message' => 'You have been registered successfully'
         ]);
@@ -90,8 +93,27 @@ class UserController extends Controller
 
       } else {
 
-        return view('dashboard');
+        session()->put('loggedin', true);
+        session()->put('user', $username);
+
+        return redirect()->route('dashboard');
       }
     }
+  }
+
+    /**
+   * Logout user
+   *
+   * @param  Request $request
+   * @return \Illuminate\View\View
+   */
+  public function logout(Request $request)
+  {
+    session()->flush();
+
+    return view('dashboard', [
+      'message' => 'You have been logged out'
+    ]);
+
   }
 }

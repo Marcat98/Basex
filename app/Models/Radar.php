@@ -18,6 +18,7 @@ class Radar extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'moderator_id',
         'description'
     ];

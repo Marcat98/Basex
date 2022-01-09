@@ -15,6 +15,7 @@ class CreateRadarTable extends Migration
     {
         Schema::create('radar', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->unsignedBigInteger('moderator_id');
             $table->text('description');
             $table->timestamps();

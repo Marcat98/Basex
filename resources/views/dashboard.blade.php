@@ -1,37 +1,12 @@
-<DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Projects</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}" />
-  </head>
-  <body>
-    <header>
-    <div class="nav-container">
-      <div class="wrapper">
-          <nav>
-            <a href="{{ route('home') }}" class="logo">
-              BASE/X
-            </a>
-              <a href="{{ route('dashboard') }}"><button class="btn" style="vertical-align:middle"><span>Account </span></button></a>
-          </nav>
-      </div>
-    </div>
-  </header>
+@extends('layouts.master')
 
-  @isset($message)
-  <div class="alert">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    {{ $message }}
-  </div>
-  @endisset
-  
+@section('content')
+
+  @if(session()->has('loggedin'))
+
   <section>
     <div class="sidenav">
-      <a href="#"><button class="prjct-btn" style="vertical-align:middle"><span>New Project </span></button></a>
+      <a href="{{ route('createRadar') }}"><button class="prjct-btn" style="vertical-align:middle"><span>New Project </span></button></a>
       <a href="#">Your Projects</a>
       <a href="#">Shared With You</a>
     </div>
@@ -41,7 +16,7 @@
     </div>
   </section>
 
-  <div class="share-link">
+  <!-- <div class="share-link">
     <a href="javascript:;" class="btn open-modal">Share Link</a>
   </div>
     <div class="modal">
@@ -58,9 +33,42 @@
           <button class="link-btn">Copy</button>
         </div>
       </div>
+    </div> -->
+  </section>
+
+  <script src="{{ asset('js/script.js') }}"></script>
+
+  @else
+  <section id="showcase">
+    <div class="content">
+      <h1>Hit your <br> target <u style="text-decoration-color: #0078E7"> every </u>  <br> time</h1>
+      <p class="par">Never miss with our online BASE/X radar tool</p>
+      <a href="{{ route('register') }}"><button class="btn" style="vertical-align:middle"><span>Join us </span></button></a>
     </div>
   </section>
 
-    <script src="{{ asset('js/script.js') }}"></script>
-  </body>
-</html>
+  <section id="boxes">
+    <div class="container">
+      <div class="box">
+        <div class="text">
+          <p class="motto">At BASE/X Inc. it is our goal to provide you
+            a flexible,<br> yet complete solution to identify,
+            define and summarize your <br> service-based business model
+          </p>
+        </div>
+      </div>
+      <div class="box1">
+        <div class="logo-box">
+          <h3>Proud partners we have worked with:</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>BASE/X Inc. Copyright &copy; 2022</p>
+  </footer>
+
+  @endif
+
+@stop

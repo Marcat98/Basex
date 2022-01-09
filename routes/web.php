@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('home')->get('/', function () {
-    return view('welcome');
+Route::name('dashboard')->get('/', function () {
+    return view('dashboard');
 });
 
 Route::name('login')->get('/login', function() {
@@ -25,8 +25,8 @@ Route::name('register')->get('/register', function() {
   return view('register');
 });
 
-Route::name('dashboard')->get('/dashboard', function() {
-  return view('dashboard');
+Route::name('createRadar')->get('/newProject', function() {
+  return view('createRadar');
 });
 
 Route::group(
@@ -36,4 +36,6 @@ Route::group(
   function () {
     Route::name('registerUser')->post('/register', 'UserController@register');
     Route::name('loginUser')->post('/login', 'UserController@login');
+    Route::name('logout')->get('/logout', 'UserController@logout');
+    Route::name('createRadar')->post('/newProject', 'RadarController@createRadar');
   });
