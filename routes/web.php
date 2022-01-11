@@ -38,4 +38,6 @@ Route::group(
     Route::name('loginUser')->post('/login', 'UserController@login');
     Route::name('logout')->get('/logout', 'UserController@logout');
     Route::name('createRadar')->post('/newProject', 'RadarController@createRadar');
+    Route::name('projectOverview')->get('/projects', 'RadarController@getProjects');
+    Route::name('showRadar')->get('/project/{radarId}', 'RadarController@showRadar');
   });

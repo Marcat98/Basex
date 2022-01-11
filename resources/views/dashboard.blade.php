@@ -14,6 +14,17 @@
     <div class="prjct-title">
       <h1>Projects</h1>
     </div>
+
+    <table id="projects" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Moderator</th>
+            <th>Description</th>
+            <th><th>
+        </tr>
+    </thead>
+  </table>
   </section>
 
   <!-- <div class="share-link">
@@ -37,6 +48,36 @@
   </section>
 
   <script src="{{ asset('js/script.js') }}"></script>
+
+  <script>
+
+  $(document).ready( function () {
+
+    $.ajaxSetup({
+            headers: { 'X-CSRF-Token' : $('meta[name="_token"]').attr('content') }
+    });
+
+    $('#projects').DataTable({
+      processing: true,
+      ajax: {
+            url: '{!! route('projectOverview')!!}',
+      },
+      columns: [
+            { data: 'name' },
+            { data: 'moderator' },
+            { data: 'description' },
+            { data: 'link',
+              render: function(data, type, row, meta) {
+                  if (type === 'display') {
+                      data = '<a href="' + data + '">Details</a>';
+                  }
+                  return data;
+              }
+            },
+      ],
+    });
+  });
+  </script>
 
   @else
   <section id="showcase">
