@@ -10,6 +10,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <!-- <script src="{{ asset('js/script.js') }}"></script> -->
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-sunburst.min.js"></script>
+    <!-- <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-data-adapter.min.js"></script> -->
     <meta name="_token" content="{!! csrf_token() !!}" />
   </head>
   <body>

@@ -6,9 +6,9 @@ html {
 body {
   font-family: "Ubuntu", sans-serif;
 
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  /* display: flex;
+  flex-direction: column; */
 }
 
 .nav-container {
@@ -379,14 +379,16 @@ nav .logo {
 
   .sidenav {
     height: 100%;
-    width: 180px;
-    position: inherit;
+    width: 14%;
+    /* position: relative; */
+    display: inline-block;
     z-index: 1;
-    top: 150px;
-    left: 185px;
+    /* top: 150px;
+    left: 185px; */
     background-color: #EFEFEF;
     overflow-x: hidden;
     padding-top: 20px;
+    margin-left: 1%;
   }
 
 
@@ -424,15 +426,19 @@ nav .logo {
   border-radius: 24px;
 }
 
+.container {
+  width: 85%;
+  float: right;
+  display: inline-block;
+  z-index: 1;
+}
+
 /*project page top bar*/
 
 .prjct-title {
-  height: 100px;
-    width: 100%;
-    position: absolute;
-    z-index: 1;
-    top: 80px;
-    left: 185px;
+    height: 25%;
+    /* top: 80px;
+    left: 185px; */
     background-color: #EFEFEF;
     overflow-x: hidden;
     padding-top: 20px;
@@ -445,6 +451,22 @@ nav .logo {
   display: block;
 }
 
+#projects td{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.table-wrapper{
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 2%;
+}
+
+#container {
+  width: 100%;
+  height: 100%;
+  float: left;
+}
 
 /* share link box */
 

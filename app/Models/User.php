@@ -39,14 +39,16 @@ class User extends Authenticatable
       return $this->belongsToMany(Radar::class, 'working_on', 'user_id', 'radar_id');
     }
 
-    // TODO:
+    // checks if user has moderator role
     public function isModerator()
     {
+      $entitlements = $this->entitlements();
 
-      $entitlements = $this->entitlements()->get();
-
-      return true;
-
+      if ($entitlements->where('entitlement_id', 2)->count()!==0) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
 

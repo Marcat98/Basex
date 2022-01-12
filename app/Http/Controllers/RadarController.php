@@ -34,10 +34,68 @@ class RadarController extends Controller
           'description' => $description,
         ]);
 
-        //Make entry in working_on
+        // Make entry in working_on
         DB::table('working_on')->insert([
           'user_id' => $user->id,
           'radar_id' => $radar->id,
+        ]);
+
+        // Create Radar Entries (2 actors default)
+        DB::table('radar_entry')->insert([
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 0,
+            'ring_position' => 0,
+            'value' => 'Business Proposition'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 1,
+            'ring_position' => 1,
+            'value' => 'Actor Value Proposition 1'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 1,
+            'ring_position' => 2,
+            'value' => 'Actor co-production activity 1'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 1,
+            'ring_position' => 3,
+            'value' => 'Actor cost/benefit 1'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 1,
+            'ring_position' => 4,
+            'value' => 'Actor 1'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 2,
+            'ring_position' => 1,
+            'value' => 'Actor Value Proposition 2'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 2,
+            'ring_position' => 2,
+            'value' => 'Actor co-production activity 2'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 2,
+            'ring_position' => 3,
+            'value' => 'Actor cost/benefit 2'
+          ],
+          [
+            'radar_id' => $radar->id,
+            'slice_position' => 2,
+            'ring_position' => 4,
+            'value' => 'Actor 2'
+          ],
         ]);
 
         return view('dashboard', [
@@ -100,7 +158,36 @@ class RadarController extends Controller
   */
   public function showRadar(Request $request)
   {
-      echo($request->radarId);
-  }
 
+    $radar = Radar::find($request->radarId);
+    $entries = $radar->entries()->get();
+
+    $json = $entries->map(function ($entry) {
+
+      $value = $entry->value;
+      $slice = $entry->slice_position;
+      $ring = $entry->ring_position;
+      $parent = $ring-1;
+
+      if ($ring == 0) {
+        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: null}";
+        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => null);
+      } else if ($ring == 1) {
+        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: '0.0'}";
+        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => "0.0");
+      } else if ($ring == 4) {
+        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: '".$slice.".3'}";
+        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".3", "normal" => json_decode(json_encode(array("fill" => "white"))));
+      } else {
+        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: '".$slice.".".$parent."'}";
+        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".".$parent);
+      }
+      return json_decode(json_encode($array));
+    });
+
+      return view('radar', [
+        'data' => $json,
+        'title' => $radar->name,
+      ]);
+  }
 }

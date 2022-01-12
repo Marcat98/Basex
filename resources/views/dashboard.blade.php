@@ -5,26 +5,29 @@
   @if(session()->has('loggedin'))
 
   <section>
-    <div class="sidenav">
-      <a href="{{ route('createRadar') }}"><button class="prjct-btn" style="vertical-align:middle"><span>New Project </span></button></a>
-      <a href="#">Your Projects</a>
-      <a href="#">Shared With You</a>
-    </div>
+      <div class="sidenav">
+        <a href="{{ route('createRadar') }}"><button class="prjct-btn" style="vertical-align:middle"><span>New Project </span></button></a>
+        <a href="#">Your Projects</a>
+        <a href="#">Shared With You</a>
+      </div>
 
-    <div class="prjct-title">
-      <h1>Projects</h1>
-    </div>
-
-    <table id="projects" class="display">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Moderator</th>
-            <th>Description</th>
-            <th><th>
-        </tr>
-    </thead>
-  </table>
+      <div class="container">
+        <div class="prjct-title">
+          <h1>Projects</h1>
+        </div>
+        <div class="table-wrapper">
+          <table id="projects" class="display" style="width:100%">
+            <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Moderator</th>
+                  <th>Description</th>
+                  <th>Details<th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
   </section>
 
   <!-- <div class="share-link">
@@ -69,7 +72,7 @@
             { data: 'link',
               render: function(data, type, row, meta) {
                   if (type === 'display') {
-                      data = '<a href="' + data + '">Details</a>';
+                      data = '<a href="' + data + '">Show</a>';
                   }
                   return data;
               }
