@@ -48,9 +48,6 @@
         </div>
       </div>
     </div> -->
-  </section>
-
-  <script src="{{ asset('js/script.js') }}"></script>
 
   <script>
 

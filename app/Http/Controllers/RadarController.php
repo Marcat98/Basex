@@ -159,35 +159,78 @@ class RadarController extends Controller
   public function showRadar(Request $request)
   {
 
-    $radar = Radar::find($request->radarId);
-    $entries = $radar->entries()->get();
+    if(session()->has('loggedin')) {
+      $radar = Radar::find($request->radarId);
+      $entries = $radar->entries()->get();
 
-    $json = $entries->map(function ($entry) {
+      $json = $entries->map(function ($entry) {
 
-      $value = $entry->value;
-      $slice = $entry->slice_position;
-      $ring = $entry->ring_position;
-      $parent = $ring-1;
+        $value = $entry->value;
+        $slice = $entry->slice_position;
+        $ring = $entry->ring_position;
+        $parent = $ring-1;
 
-      if ($ring == 0) {
-        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: null}";
-        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => null);
-      } else if ($ring == 1) {
-        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: '0.0'}";
-        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => "0.0");
-      } else if ($ring == 4) {
-        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: '".$slice.".3'}";
-        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".3", "normal" => json_decode(json_encode(array("fill" => "white"))));
+        if ($ring == 0) {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => null);
+        } else if ($ring == 1) {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => "0.0");
+        } else if ($ring == 4) {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".3",
+            "normal" => json_decode(json_encode(array("fill" => "white"))));
+        } else {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".".$parent);
+        }
+        return json_decode(json_encode($array));
+      });
+
+        return view('radar', [
+          'data' => $json,
+          'title' => $radar->name,
+        ]);
       } else {
-        //$data = "{name: '".$value."', id: '".$slice.".".$ring."', parent: '".$slice.".".$parent."'}";
-        $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".".$parent);
+        return view('dashboard', [
+          'message' => 'You have to be logged in in order to see your projects',
+        ]);
       }
-      return json_decode(json_encode($array));
-    });
+  }
 
-      return view('radar', [
+  public function editRadar(Request $request) {
+
+    if(session()->has('loggedin')) {
+
+      // TODO: Data has already been requested to show the radar
+      // => pass data through instead of requesting it again?
+      $radar = Radar::find($request->radarId);
+      $entries = $radar->entries()->get();
+
+      $json = $entries->map(function ($entry) {
+
+        $value = $entry->value;
+        $slice = $entry->slice_position;
+        $ring = $entry->ring_position;
+        $parent = $ring-1;
+
+        if ($ring == 0) {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => null);
+        } else if ($ring == 1) {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => "0.0");
+        } else if ($ring == 4) {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".3",
+            "normal" => json_decode(json_encode(array("fill" => "white"))));
+        } else {
+          $array = array("name" => $value, "id" => $slice.".".$ring, "parent" => $slice.".".$parent);
+        }
+        return json_decode(json_encode($array));
+      });
+
+      return view('editRadar', [
         'data' => $json,
         'title' => $radar->name,
       ]);
+    } else {
+      return view('dashboard', [
+        'message' => 'You have to be logged in in order to edit a project',
+      ]);
+    }
   }
 }

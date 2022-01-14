@@ -40,4 +40,5 @@ Route::group(
     Route::name('createRadar')->post('/newProject', 'RadarController@createRadar');
     Route::name('projectOverview')->get('/projects', 'RadarController@getProjects');
     Route::name('showRadar')->get('/project/{radarId}', 'RadarController@showRadar');
+    Route::name('editRadar')->get('editProject/{radarId}', 'RadarController@editRadar');
   });

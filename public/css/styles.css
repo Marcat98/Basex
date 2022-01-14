@@ -462,10 +462,29 @@ nav .logo {
   margin-top: 2%;
 }
 
+/* container for the radar */
 #container {
-  width: 100%;
+  width: 90%;
   height: 100%;
   float: left;
+}
+
+.edit-button{
+      border-radius: 5em;
+      width: 10%;
+      display: inline-block;
+      float: right;
+      cursor: pointer;
+      color: #fff;
+      background: gray;
+      border-radius: 5em;
+      border: 0;
+      padding-left: 2%;
+      padding-right: 2%;
+      padding-bottom: 1%;
+      padding-top: 1%;
+      font-family: 'Ubuntu', sans-serif;
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
 /* share link box */
