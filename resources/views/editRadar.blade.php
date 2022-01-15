@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <figure class="highcharts-figure">
     <div id="container"></div>
 </figure>
@@ -14,32 +13,14 @@
 <button class="edit-button" onclick="popSlice()" style="margin-top:2%">
   <span>Remove last slice</span>
 </button>
-<button class="edit-button" onclick="" style="margin-top:2%">
+<button class="edit-button" onclick="openPopupWindow()" style="margin-top:2%">
   <span>Edit entry</span>
 </button>
 <button class="edit-button" onclick="" style="background: #0078E7;margin-top:9%">
   <span>Save</span>
 </button>
 @endif
-<!-- <div class="share-link">
-  <a href="javascript:;" class="btn open-modal">Share Link</a>
-</div>
-  <div class="modal">
-    <div class="modal_head">
-      <h2 class="modal_title">Share.</h2>
-      <a href="javascript:;" class="modal_close">
-        <i class='bx bx-x'></i>
-      </a>
-    </div>
-    <div class="modal_body">
-      <h3 class="modal_name">Share this link:</h3>
-      <div class="modal_label">
-        <input type="text" class="modal_input" value="file:///C:/Users/Max/Documents/Master%20DS/Projects/Project%201/Web/projects.html">
-        <button class="link-btn">Copy</button>
-      </div>
-    </div>
-  </div>
-  <script src="{{ asset('js/script.js') }}"></script> -->
+
 <script>
   // Initialise chart
   var data = {!! $data !!};
@@ -58,8 +39,6 @@
 
    // Number of slices
    var slices = Number(data[data.length-1].id.split('.')[0]);
-   console.log(slices);
-
 
   // This function takes the number of the last slice and adds a new slice based on that number
   function addSlice() {
@@ -81,7 +60,6 @@
     );
     chart.data(data, "as-table");
     slices++;
-    console.log(slices);
   }
 
   // removes the last added slice
@@ -93,9 +71,52 @@
       data.pop();
       chart.data(data, "as-table");
       slices--;
-      console.log(slices);
     } else {
       alert('A valid project must have at least two actors! Last slice could not be removed');
+    }
+  }
+
+  // edit entries through popupwindow
+  var popupWindow;
+  var sharedObject = {};
+
+  function openPopupWindow() {
+    // pass number of slices through shared object
+    sharedObject.slices = slices;
+    // Open the popup window
+    popupWindow = this.open('{{ route('editEntry') }}', 'Edit Radar Entry', 'resizable=yes,height=600,width=450,location=0,menubar=0,scrollbars=1');
+    if (this.focus) {
+      popupWindow.focus();
+    }
+  }
+
+  function closePopupWindow() {
+    popupWindow.close();
+    // Retrieve the data from popup popupWindow
+    var slice = sharedObject.slice;
+    var ring = sharedObject.ring;
+    var value = sharedObject.value;
+    var changed = false;
+
+    if (slice!=='' && ring!=='' && value!=='') {
+      // Search entry in data
+      data.forEach(function (entry) {
+        if (entry.id === slice + '.' + ring) {
+          if (ring==='4') {
+            // Add slice number to changed actor name so user knows which slice is which
+            value = value + ' (' + slice + ')';
+          }
+          entry.name = value;
+          changed = true;
+        }
+      });
+      if(!changed) {
+        alert('Changes could not be executed. Make sure to enter a valid slice number. Current max number for slice is: ' + slices);
+      } else {
+        chart.data(data, "as-table");
+      }
+    } else {
+      alert('Make sure to enter the number of the slice and the ring in which the entry to change is located as well as the new value of the entry');
     }
   }
 </script>
