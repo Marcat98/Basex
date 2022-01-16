@@ -233,4 +233,61 @@ class RadarController extends Controller
       ]);
     }
   }
+
+  public function saveChanges(Request $request) {
+    // retrieve data
+    $radarId = $request->radar;
+    $dataObject = json_decode(json_encode($request->data));
+    //echo($dataObject[0]->name);
+    $slicesBefore = $request->slicesBefore;
+    $slicesAfter = $request->slicesAfter;
+    $changedEntries = $request->changedEntries;
+    //echo(json_encode($changedEntries));
+
+    // if new slices have been added, create database entries
+    if ($slicesAfter > $slicesBefore) {
+      // new db entry for every element in data where first part of id (slice number) bigger than $slicesBefore
+      foreach ($dataObject as $entry) {
+        $array = explode(".", $entry->id);
+        $slice = $array[0];
+        if ($slice > $slicesBefore) {
+          // Create Radar Entry (if somehow entry for this radar with this slice and ring position exists it only updates value instead of adding another record)
+          DB::table('radar_entry')->updateOrInsert(
+            [
+              'radar_id' => $radarId,
+              'slice_position' => $slice,
+              'ring_position' => $array[1],
+            ],
+            [ 'value' => $entry->name ]
+          );
+        }
+      }
+    // if slices have been deleted, delete database entries
+    } else if ($slicesAfter < $slicesBefore) {
+      // delete every element where slice number bigger than $slicesAfter
+      DB::table('radar_entry')->where('slice_position', '>', $slicesAfter)->delete();
+    }
+
+    // Slices that already existed need to be updated when entries have been edited
+    if($changedEntries!==null) {
+      foreach ($changedEntries as $id) {
+        $array = explode(".", $id);
+        $slice = $array[0];
+        $ring = $array[1];
+        if ($slice <= $slicesBefore) {
+          // search for entry with specific id
+          $value=null;
+          foreach ($dataObject as $entry) {
+            if ($entry->id === $id) {
+              $value = $entry->name;
+            }
+          }
+          if ($value!==null) {
+            DB::table('radar_entry')->where('radar_id', $radarId)->where('slice_position', $slice)
+              ->where('ring_position', $ring)->update(['value' => $value ]);
+          }
+        }
+      }
+    }
+  }
 }

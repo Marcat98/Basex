@@ -42,4 +42,5 @@ Route::group(
     Route::name('showRadar')->get('/project/{radarId}', 'RadarController@showRadar');
     Route::name('editRadar')->get('editProject/{radarId}', 'RadarController@editRadar');
     Route::name('editEntry')->get('editEntry', function() { return view('editEntry'); });
+    Route::name('saveChanges')->post('save', 'RadarController@saveChanges');
   });
