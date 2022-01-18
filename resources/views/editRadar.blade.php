@@ -7,7 +7,7 @@
 </figure>
 
 @if(App\Models\User::where('username',session()->get('user'))->first()->isModerator())
-<button class="edit-button" onclick="addSlice()" style="margin-top:12%">
+<button class="edit-button" onclick="addSlice()" style="margin-top:2%">
   <span>Add Slice</span>
 </button>
 <button class="edit-button" onclick="popSlice()" style="margin-top:2%">
@@ -16,9 +16,12 @@
 <button class="edit-button" onclick="openPopupWindow()" style="margin-top:2%">
   <span>Edit entry</span>
 </button>
-<button class="edit-button" onclick="save()" style="background: #0078E7;margin-top:9%">
+<button class="edit-button" onclick="save()" style="background: #0078E7;margin-top:2%;margin-bottom:10%">
   <span>Save</span>
 </button>
+<fieldset id ="levels" style="margin-right:1%">
+<legend>Ring:</legend>
+</fieldset>
 @endif
 
 <script>
@@ -37,6 +40,18 @@
   chart.container("container");
   // initiate drawing the chart
   chart.draw();
+
+  //Ring View
+  var maxDepth = chart.getStat('treeMaxDepth');
+  for (var i = 0; i <= maxDepth; i++) {
+  	var enabled = chart.level(i).enabled();
+  	$('#levels').append('<input type="checkbox" checked="true"  name="levels" id="level ' + i + '" value="' + i + '" ' + (enabled ? 'checked' : '') + '>');
+  	$('#levels').append('<label for="' + i + '">Ring ' + (i+1) + '</label><br>');
+  }
+
+  $('input[name=levels]').on('change', function() {
+  	chart.level(+$(this).val()).enabled($(this).is(':checked'));
+  });
 
    // Number of slices
    var slicesBefore = Number(data[data.length-1].id.split('.')[0]);
