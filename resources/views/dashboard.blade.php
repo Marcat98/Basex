@@ -23,6 +23,7 @@
                   <th>Moderator</th>
                   <th>Description</th>
                   <th>Details<th>
+                  <th><th>
               </tr>
             </thead>
           </table>
@@ -61,6 +62,9 @@
       processing: true,
       ajax: {
             url: '{!! route('projectOverview')!!}',
+            error: function (data) {
+              console.log(data);
+            }
       },
       columns: [
             { data: 'name' },
@@ -73,6 +77,15 @@
                   }
                   return data;
               }
+            },
+            { data: 'link2',
+              render: function(data, type, row, meta) {
+                  if (type === 'display') {
+                      data = '<a href="' + data + '">Add User</a>';
+                  }
+                  return data;
+              },
+              visible : "{{ App\Models\User::where('username',session()->get('user'))->first()->isModerator() }}"
             },
       ],
     });

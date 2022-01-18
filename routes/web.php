@@ -40,6 +40,8 @@ Route::group(
     Route::name('createRadar')->post('/newProject', 'RadarController@createRadar');
     Route::name('projectOverview')->get('/projects', 'RadarController@getProjects');
     Route::name('showRadar')->get('/project/{radarId}', 'RadarController@showRadar');
+    Route::name('addUser')->get('/project/{radarId}/addUser', 'RadarController@addUser');
+    Route::name('setWorkingOn')->post('project/{radarId}/add', 'RadarController@add');
     Route::name('editRadar')->get('editProject/{radarId}', 'RadarController@editRadar');
     Route::name('editEntry')->get('editEntry', function() { return view('editEntry'); });
     Route::name('saveChanges')->post('save', 'RadarController@saveChanges');

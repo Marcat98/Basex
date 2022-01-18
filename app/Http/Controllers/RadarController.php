@@ -136,6 +136,7 @@ class RadarController extends Controller
                           'moderator'   => User::find($project->moderator_id)->username,
                           'description' =>  $project->description,
                           'link'        =>  route('showRadar', ['radarId' => $project->id]),
+                          'link2'       => route('addUser', ['radarId' => $project->id]),
                       ]);
                   });;
 
@@ -192,6 +193,44 @@ class RadarController extends Controller
           'message' => 'You have to be logged in in order to see your projects',
         ]);
       }
+  }
+
+  public function addUser(Request $request) {
+    if(session()->has('loggedin')) {
+      // get all users except the logged in user
+      $users = User::where('username', '!=', session()->get('user'))->get()->map(function ($user) {
+        return [
+          'username' => $user->username
+        ];
+      });
+      return view('addUser', [
+        'project' => Radar::find($request->radarId)->name,
+        'users' => $users,
+      ]);
+    } else {
+      return view('dashboard', [
+        'message' => 'You have to be logged in in order to add other users to your project',
+      ]);
+    }
+  }
+
+  public function add(Request $request) {
+    if(session()->has('loggedin')) {
+
+      $user = User::where('username', $request->user)->first();
+      // Make entry in working_on
+      DB::table('working_on')->updateOrInsert([
+        'user_id' => $user->id,
+        'radar_id' => $request->radarId,
+      ]);
+      return view('dashboard', [
+        'message' => 'The user '.$request->user.' has successfully been added to the project!',
+      ]);
+    } else {
+      return view('dashboard', [
+        'message' => 'You have to be logged in in order to add other users to your project',
+      ]);
+    }
   }
 
   public function editRadar(Request $request) {
