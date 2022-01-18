@@ -7,9 +7,12 @@
     <div id="container"></div>
 </figure>
 
+<button class="btn" onclick="exportAsPng()" style="width:10%;margin-top:0%;background-color: #8C8C8C;">
+  <span>Export</span></button>
+
 @if(App\Models\User::where('username',session()->get('user'))->first()->isModerator())
 <a href="{{ route('editRadar', ['radarId' => request()->radarId]) }}">
-  <button class="btn" style="width:10%;margin-top:32%;background-color: #8C8C8C;">
+  <button class="btn" style="width:10%;margin-top:27%;background-color: #8C8C8C;">
     <span>Edit Project</span></button>
 </a>
 @endif
@@ -28,5 +31,10 @@
   chart.container("container");
   // initiate drawing the chart
   chart.draw();
+
+  function exportAsPng() {
+      // Saves into PNG file.
+      chart.saveAsPng(2000, 1200, 0.7, 'Project_{!! $title !!}');
+  }
 </script>
 @stop

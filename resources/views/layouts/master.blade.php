@@ -13,6 +13,7 @@
     <!-- <script src="{{ asset('js/script.js') }}"></script> -->
     <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-sunburst.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
     <!-- <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-data-adapter.min.js"></script> -->
     <meta name="_token" content="{!! csrf_token() !!}" />
   </head>
