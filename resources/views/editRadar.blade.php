@@ -7,16 +7,19 @@
 </figure>
 
 @if(App\Models\User::where('username',session()->get('user'))->first()->isModerator())
+<label for="valueInput" style="width:10%;float:right">Value for the selected item:</label>
+<input id="valueInput" style="width:10%;float:right;margin-top:1%">
+<button class="edit-button" onclick="updateInfo()" style="margin-top:1%">
+  <span>Edit entry</span>
+</button>
+<!-- <button class="edit-button" onclick="chart.fullScreen(true)" style="margin-top:1%">Fullscreen</button> -->
 <button class="edit-button" onclick="addSlice()" style="margin-top:2%">
   <span>Add Slice</span>
 </button>
 <button class="edit-button" onclick="popSlice()" style="margin-top:2%">
   <span>Remove last slice</span>
 </button>
-<button class="edit-button" onclick="openPopupWindow()" style="margin-top:2%">
-  <span>Edit entry</span>
-</button>
-<button class="edit-button" onclick="save()" style="background: #0078E7;margin-top:2%;margin-bottom:10%">
+<button class="edit-button" onclick="save()" style="background: #0078E7;margin-top:2%;margin-bottom:2%">
   <span>Save</span>
 </button>
 <fieldset id ="levels" style="margin-right:1%">
@@ -31,15 +34,32 @@
   var chart = anychart.sunburst(data, "as-table");
   var level = chart.level(4);
   chart.labels().position("circular");
-  chart.level(1).normal().fill("#96a6a6", 0.4);
+  // chart.level(1).normal().fill("#96a6a6", 0.4);
   //chart.normal().fill("#96a6a6", 0.4);
-  level.labels({fontColor: 'gray', fontWeight: 600});
+  // level.labels({fontColor: 'gray', fontWeight: 600});
   chart.interactivity().selectionMode("single-select");
   chart.title('Project Name: '+'{!! $title !!}');
   // set the container id
   chart.container("container");
   // initiate drawing the chart
   chart.draw();
+
+  // styling
+  var center = chart.level(0);
+  chart.radius('100%');
+  chart.labels({fontColor:'black'});
+  chart.labels().fontFamily("Verdana");
+  chart.labels().fontWeight(600);
+  // chart.labels().width("80%");
+  // chart.labels().height("50%");
+  // center.labels().width("10%")
+  // center.labels().height("100%");
+  // //chart.labels().adjustFontSize(false);
+  center.labels().fontSize(17);
+
+  // level.labels().position('outside');
+  // level.labels().offsetX(20);
+  chart.selected().fill("#8C8C8C", 0.6);
 
   //Ring View
   var maxDepth = chart.getStat('treeMaxDepth');
@@ -141,6 +161,27 @@
     } else {
       alert('Make sure to enter the number of the slice and the ring in which the entry to change is located as well as the new value of the entry');
     }
+  }
+
+  //Edit onclick without popup
+  var selectedItem = null;
+
+  chart.listen('pointClick', function(e) {
+    if (e.point) {
+      selectedItem = e.point;
+	  var name = e.point.get("name");
+	  $("#valueInput").val(name);
+	  console.log(name);
+    } else {
+    	selectedItem = null;
+    }
+  });
+
+  function updateInfo() {
+    var newName = document.getElementById("valueInput").value;
+    newName.innerHTML = 'shh';
+    var newData = [newName];
+    selectedItem.set('name', newData);
   }
 
   // Set up asynchronous request to save the changes

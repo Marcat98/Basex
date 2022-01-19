@@ -7,8 +7,10 @@
     <div id="container"></div>
 </figure>
 
-<button class="btn" onclick="exportAsPng()" style="width:10%;margin-top:10%;background-color: #8C8C8C;">
-  <span>Export</span></button>
+<button class="btn" onclick="exportAsPng()" style="width:10%;margin-top:2%;background-color: #8C8C8C;">
+  <span>Export</span>
+</button>
+<button class="btn" onclick="chart.fullScreen(true)" style="width:10%;margin-top:2%;background-color: #8C8C8C;">Fullscreen</button>
 
 @if(App\Models\User::where('username',session()->get('user'))->first()->isModerator())
 <a href="{{ route('editRadar', ['radarId' => request()->radarId]) }}">
@@ -26,15 +28,32 @@
   var chart = anychart.sunburst(data, "as-table");
   var level = chart.level(4);
   chart.labels().position("circular");
-  chart.level(1).normal().fill("#96a6a6", 0.4);
+  //chart.level(1).normal().fill("#96a6a6", 0.4);
   //chart.normal().fill("#96a6a6", 0.4);
-  level.labels({fontColor: 'gray', fontWeight: 600});
+  //level.labels({fontColor: 'gray', fontWeight: 600});
   chart.interactivity().selectionMode("single-select");
   chart.title('Project Name: '+'{!! $title !!}');
   // set the container id
   chart.container("container");
   // initiate drawing the chart
   chart.draw();
+
+  // styling
+  var center = chart.level(0);
+  chart.radius('100%');
+  chart.labels({fontColor:'black'});
+  chart.labels().fontFamily("Verdana");
+  chart.labels().fontWeight(600);
+  chart.labels().width("80%");
+  chart.labels().height("50%");
+  center.labels().width("10%")
+  center.labels().height("100%");
+  chart.labels().adjustFontSize(false);
+  center.labels().fontSize(17);
+
+  // level.labels().position('outside');
+  // level.labels().offsetX(20);
+  chart.selected().fill("#8C8C8C", 0.6);
 
   //Ring View
   var maxDepth = chart.getStat('treeMaxDepth');
