@@ -56,7 +56,7 @@ match the credentials of the database you just created)
 15. Run *php artisan db:seed* to seed the database. This will make the entries in *entitlements*-table 
 16. To start the application you can now run *php artisan serve* and follow the instructions in the output
 
-### Additional remarks
+## Additional remarks
 
 If you want a user account to have the moderator entitlement you need to:
 
