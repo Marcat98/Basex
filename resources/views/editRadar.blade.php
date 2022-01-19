@@ -50,12 +50,12 @@
   chart.labels({fontColor:'black'});
   chart.labels().fontFamily("Verdana");
   chart.labels().fontWeight(600);
-  // chart.labels().width("80%");
-  // chart.labels().height("50%");
-  // center.labels().width("10%")
-  // center.labels().height("100%");
-  // //chart.labels().adjustFontSize(false);
-  center.labels().fontSize(17);
+  chart.labels().width("80%");
+  chart.labels().height("50%");
+  center.labels().width("10%")
+  center.labels().height("100%");
+  chart.labels().adjustFontSize(false);
+  chart.labels().fontSize('100%');
 
   // level.labels().position('outside');
   // level.labels().offsetX(20);

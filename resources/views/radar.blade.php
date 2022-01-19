@@ -49,7 +49,7 @@
   center.labels().width("10%")
   center.labels().height("100%");
   chart.labels().adjustFontSize(false);
-  center.labels().fontSize(17);
+  center.labels().fontSize('100%');
 
   // level.labels().position('outside');
   // level.labels().offsetX(20);
