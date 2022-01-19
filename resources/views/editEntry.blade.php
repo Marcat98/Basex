@@ -17,7 +17,8 @@
           <option value="0">Business Proposition</option>
           <option value="1">Actor Value Proposition</option>
           <option value="2">Actor co-production activity</option>
-          <option value="3">Actor cost/benefit</option>
+          <option value="31">Actor cost</option>
+          <option value="32">Actor benefit</option>
           <option value="4">Actor</option>
         </select>
         <input class="un" type="text" align="center" placeholder="Value" id="value">

@@ -43,16 +43,15 @@
   chart.radius('100%');
   chart.labels({fontColor:'black'});
   chart.labels().fontFamily("Verdana");
-  chart.labels().fontWeight(600);
-  chart.labels().width("80%");
-  chart.labels().height("50%");
+  chart.labels().fontWeight(700);
+  chart.labels().width("30%");
+  chart.labels().height("10%");
   center.labels().width("10%")
-  center.labels().height("100%");
-  chart.labels().adjustFontSize(false);
-  center.labels().fontSize('100%');
+  center.labels().height("50%");
+  chart.labels().adjustFontSize(true);
+  center.labels().adjustFontSize(false);
+  center.labels().fontSize('90%');
 
-  // level.labels().position('outside');
-  // level.labels().offsetX(20);
   chart.selected().fill("#8C8C8C", 0.6);
 
   //Ring View
@@ -65,6 +64,11 @@
 
   $('input[name=levels]').on('change', function() {
   	chart.level(+$(this).val()).enabled($(this).is(':checked'));
+    if(chart.level(0).enabled() == false) {
+      chart.level(1).labels().width("20%");
+    } else {
+      chart.level(1).labels().width("30%");
+    }
   });
 
   function exportAsPng() {

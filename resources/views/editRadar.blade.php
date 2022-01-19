@@ -7,9 +7,9 @@
 </figure>
 
 @if(App\Models\User::where('username',session()->get('user'))->first()->isModerator())
-<label for="valueInput" style="width:10%;float:right">Value for the selected item:</label>
-<input id="valueInput" style="width:10%;float:right;margin-top:1%">
-<button class="edit-button" onclick="updateInfo()" style="margin-top:1%">
+<!-- <label for="valueInput" style="width:10%;float:right">Value for the selected item:</label>
+<input id="valueInput" style="width:10%;float:right;margin-top:1%"> -->
+<button class="edit-button" onclick="openPopupWindow()" style="margin-top:5%">
   <span>Edit entry</span>
 </button>
 <!-- <button class="edit-button" onclick="chart.fullScreen(true)" style="margin-top:1%">Fullscreen</button> -->
@@ -49,16 +49,15 @@
   chart.radius('100%');
   chart.labels({fontColor:'black'});
   chart.labels().fontFamily("Verdana");
-  chart.labels().fontWeight(600);
-  chart.labels().width("80%");
-  chart.labels().height("50%");
+  chart.labels().fontWeight(700);
+  chart.labels().width("30%");
+  chart.labels().height("10%");
   center.labels().width("10%")
-  center.labels().height("100%");
-  chart.labels().adjustFontSize(false);
-  chart.labels().fontSize('100%');
+  center.labels().height("50%");
+  chart.labels().adjustFontSize(true);
+  center.labels().adjustFontSize(false);
+  center.labels().fontSize('90%');
 
-  // level.labels().position('outside');
-  // level.labels().offsetX(20);
   chart.selected().fill("#8C8C8C", 0.6);
 
   //Ring View
@@ -71,6 +70,11 @@
 
   $('input[name=levels]').on('change', function() {
   	chart.level(+$(this).val()).enabled($(this).is(':checked'));
+    if(chart.level(0).enabled() == false) {
+      chart.level(1).labels().width("20%");
+    } else {
+      chart.level(1).labels().width("30%");
+    }
   });
 
    // Number of slices
@@ -83,17 +87,20 @@
     var index = Number(lastIndex[0]) + 1;
     var firstId = index + '.1';
     var secondId = index + '.2';
-    var thirdId = index + '.3';
-    var fourthId = index + '.4';
+    var thirdId = index + '.31';
+    var fourthId = index + '.32';
+    var fifthId = index + '.4';
     var avp = 'Actor Value Proposition ' + index;
     var aca = 'Actor co-production activity ' + index;
-    var acb = 'Actor cost/benefit ' + index;
+    var ac = 'Actor cost ' + index;
+    var ab = 'Actor benefit ' + index;
     var act = 'Actor ' + index;
     data.push(
       {name: avp, parent: '0.0', id: firstId},
 			{name: aca, parent: firstId, id: secondId},
-			{name: acb, parent: secondId, id: thirdId},
-			{name: act, normal: {fill: "white"}, parent: thirdId, id: fourthId}
+			{name: ac, parent: secondId, id: thirdId},
+      {name: ab, parent: secondId, id: fourthId},
+			{name: act, normal: {fill: "white"}, parent: thirdId, id: fifthId}
     );
     chart.data(data, "as-table");
     slicesAfter++;
@@ -103,6 +110,7 @@
   function popSlice() {
     if (slicesAfter > 2) {
       data.pop(); // remove all 4 entries corresponding to this slice
+      data.pop();
       data.pop();
       data.pop();
       data.pop();
@@ -182,6 +190,8 @@
     newName.innerHTML = 'shh';
     var newData = [newName];
     selectedItem.set('name', newData);
+    changedEntries.push(selectedItem.get('id'));
+    // console.log(changedEntries);
   }
 
   // Set up asynchronous request to save the changes
